@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: backend/Dockerfile # We will create this Dockerfile next
+run:
+  web: node backend/src/app.js # Adjust if your Procfile command was different
