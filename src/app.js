@@ -7,8 +7,8 @@ const cors = require('cors');
 const db = require('./config/db');
 
 // --- Import Route Files ---
-const authRoutes = require('./routes/authRoutes'); // NOW UNCOMMENTED/ADDED
-// const characterRoutes = require('./routes/characterRoutes'); // Placeholder
+const authRoutes = require('./routes/authRoutes');
+const characterRoutes = require('./routes/characterRoutes'); // NOW UNCOMMENTED/ADDED
 // const preferenceRoutes = require('./routes/preferenceRoutes'); // Placeholder
 
 const app = express();
@@ -29,10 +29,10 @@ app.get('/', (req, res) => {
 });
 
 // Mount authentication routes under the /api/auth prefix
-app.use('/api/auth', authRoutes); // NOW UNCOMMENTED/ADDED
+app.use('/api/auth', authRoutes);
 
-// Mount character routes (placeholder)
-// app.use('/api/characters', characterRoutes);
+// Mount character routes under the /api/characters prefix
+app.use('/api/characters', characterRoutes); // NOW UNCOMMENTED/ADDED
 
 // Mount preference routes (placeholder)
 // app.use('/api/preferences', preferenceRoutes);
