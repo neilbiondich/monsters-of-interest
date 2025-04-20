@@ -3,8 +3,8 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-// Import database connection setup (we'll create this file next)
-// const pool = require('./config/db');
+// Import database connection setup (NOW UNCOMMENTED)
+const db = require('./config/db'); // Changed 'pool' to 'db' to match export
 
 const app = express();
 
@@ -49,14 +49,19 @@ const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  // Optional: Test database connection on startup
-  // pool.query('SELECT NOW()', (err, res) => {
-  //   if (err) {
-  //     console.error('Error connecting to database:', err);
-  //   } else {
-  //     console.log('Database connected successfully at:', res.rows[0].now);
-  //   }
-  // });
+  // Optional: Test database connection on startup (NOW UNCOMMENTED)
+  // We use the exported query function from db.js
+  db.query('SELECT NOW()', (err, res) => {
+    if (err) {
+      // Don't crash the app, just log the error
+      console.error('!!! Error connecting to database:', err.message);
+      console.error('!!! Ensure DATABASE_URL in .env is correct for local setup or Heroku Config Vars are set.');
+    } else if (res && res.rows && res.rows.length > 0) {
+      console.log('Database connected successfully at:', res.rows[0].now);
+    } else {
+        console.warn('Database query executed but returned no result for NOW(). Check connection.');
+    }
+  });
 });
 
 module.exports = app; // Export for potential testing
