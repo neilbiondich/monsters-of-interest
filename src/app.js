@@ -3,8 +3,13 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-// Import database connection setup (NOW UNCOMMENTED)
-const db = require('./config/db'); // Changed 'pool' to 'db' to match export
+// Import database connection setup
+const db = require('./config/db');
+
+// --- Import Route Files ---
+const authRoutes = require('./routes/authRoutes'); // NOW UNCOMMENTED/ADDED
+// const characterRoutes = require('./routes/characterRoutes'); // Placeholder
+// const preferenceRoutes = require('./routes/preferenceRoutes'); // Placeholder
 
 const app = express();
 
@@ -16,23 +21,20 @@ app.use(cors());
 // Parse JSON request bodies
 app.use(express.json());
 
-// --- Routes ---
+// --- Mount Routers ---
 
 // Basic root route to check if the server is running
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Monsters of Interest API!' });
 });
 
-// Placeholder for authentication routes
-// const authRoutes = require('./routes/authRoutes');
-// app.use('/api/auth', authRoutes);
+// Mount authentication routes under the /api/auth prefix
+app.use('/api/auth', authRoutes); // NOW UNCOMMENTED/ADDED
 
-// Placeholder for character routes
-// const characterRoutes = require('./routes/characterRoutes');
+// Mount character routes (placeholder)
 // app.use('/api/characters', characterRoutes);
 
-// Placeholder for preference routes
-// const preferenceRoutes = require('./routes/preferenceRoutes');
+// Mount preference routes (placeholder)
 // app.use('/api/preferences', preferenceRoutes);
 
 
@@ -49,11 +51,9 @@ const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  // Optional: Test database connection on startup (NOW UNCOMMENTED)
-  // We use the exported query function from db.js
+  // Optional: Test database connection on startup
   db.query('SELECT NOW()', (err, res) => {
     if (err) {
-      // Don't crash the app, just log the error
       console.error('!!! Error connecting to database:', err.message);
       console.error('!!! Ensure DATABASE_URL in .env is correct for local setup or Heroku Config Vars are set.');
     } else if (res && res.rows && res.rows.length > 0) {
